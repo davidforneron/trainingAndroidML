@@ -1,13 +1,10 @@
 package com.meli.trainingml;
 
 import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.res.Resources;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 
 public class MainActivity extends Activity {
 
@@ -50,7 +47,7 @@ public class MainActivity extends Activity {
 	
 	@SuppressWarnings("unchecked")
 	private void findProduct(String string) {
-		FindTask findTask = new FindTask();
+		FindTask findTask = new FindTask(this);
 		HashMap<String, String> params = new HashMap<String, String>(); 
         params.put("product",  string);
 		findTask.execute(params);
@@ -80,6 +77,14 @@ public class MainActivity extends Activity {
 	private class FindTask extends AsyncTask<HashMap<String, String>, Void, String> {
 	    private ProgressDialog dialog = new ProgressDialog(MainActivity.this);
 
+	    private Context context;
+	    private Activity activity;
+	    
+	    public FindTask(Activity activity) {
+	    	this.context = activity.getApplicationContext();
+	    	this.activity = activity;
+	    }
+	    
 	    @Override
 	    protected void onPreExecute() {
 	    	dialog.setMessage("Searching products...");
@@ -103,20 +108,13 @@ public class MainActivity extends Activity {
 	        }
 	    }
 	    
-	  //TODO: Create fragment to show results
 	    private void showList(String response) {
-	    	try {
-	    		JSONObject jsonObject = new JSONObject(response);
-	    		JSONArray jsonArray = jsonObject.getJSONArray("results");
-				Resources res = getResources();
-				Toast.makeText(getApplicationContext(),
-						res.getString(R.string.products_found) + jsonArray.length(), Toast.LENGTH_SHORT).show();
-				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	
+			Bundle options = new Bundle();
+			options.putString("response", response);
+			Intent intent = new Intent(context, ListItemsActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.putExtras(options);
+			context.startActivity(intent);
 	    }
 	}
 
