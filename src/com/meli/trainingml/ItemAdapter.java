@@ -1,18 +1,9 @@
 package com.meli.trainingml;
 
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.meli.trainingml.items.Item;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,18 +30,6 @@ public class ItemAdapter extends BaseAdapter{
     }
 
     @Override
-    public Object getItem(int arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public long getItemId(int arg0) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (convertView == null) {
@@ -59,7 +38,9 @@ public class ItemAdapter extends BaseAdapter{
             holder = new ViewHolder();
             holder.textTitle = (TextView) vi.findViewById(R.id.textTitle); // Title
             holder.textPrice = (TextView) vi.findViewById(R.id.textPrice); // Price
-            holder.imageThumbnail = (ImageView) vi.findViewById(R.id.imgPreview); // Preview image
+            holder.textAddress = (TextView) vi.findViewById(R.id.textAddress); // Address
+            holder.textCondition = (TextView) vi.findViewById(R.id.textCondition); // Condition
+            holder.imageThumbnail = (ImageView) vi.findViewById(R.id.imgThumbnail); // Preview image
             vi.setTag(holder);
         } else {
             holder = (ViewHolder) vi.getTag();
@@ -68,9 +49,24 @@ public class ItemAdapter extends BaseAdapter{
         Item item = items.get(position);
         holder.textTitle.setText(item.getTitle());
         holder.textPrice.setText(item.getPrice());
-        holder.imageThumbnail.setImageBitmap(item.getThumbnail());
-            
+        //holder.imageThumbnail.setImageBitmap(item.getThumbnail());
+        if(holder.textAddress != null) {
+        	holder.textAddress.setText(item.getAddress());
+        }
+        if(holder.textCondition != null) {
+        	holder.textCondition.setText(item.getCondition());
+        }
         return vi;
+    }
+    
+    @Override
+    public Object getItem(int position) {
+        return  items.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     /*
@@ -80,6 +76,8 @@ public class ItemAdapter extends BaseAdapter{
 
         TextView textTitle;
         TextView textPrice;
+        TextView textAddress;
+        TextView textCondition;
         ImageView imageThumbnail;
     }
 

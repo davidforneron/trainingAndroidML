@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.meli.trainingml.items.Item;
+import com.meli.trainingml.util.Utils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -62,7 +63,13 @@ public class ListItemsActivity extends Activity {
 			jsonArray = jsonResponse.getJSONArray("results");
 			for(int i=0; i < jsonArray.length(); i++) {
 				jsonItem = jsonArray.getJSONObject(i);
-				item = new Item(jsonItem.getString("title"), jsonItem.getString("price"));
+				
+				String address = jsonItem.getJSONObject("address").getString("state_name");
+				item = new Item(jsonItem.getString("title"), 
+						jsonItem.getString("price"), 
+						Utils.getDate(jsonItem.getString("stop_time")), 
+						jsonItem.getString("condition"), 
+						address);
 				items.add(item);
 				//jsonItem.getString("thumbnail")
 			}

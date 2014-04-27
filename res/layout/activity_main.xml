@@ -9,7 +9,7 @@
     tools:context="com.meli.trainingml.MainActivity$PlaceholderFragment" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textCondition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_product" />
@@ -27,8 +27,8 @@
         android:id="@+id/editTextProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/textCondition"
+        android:layout_below="@+id/textCondition"
         android:layout_marginTop="14dp"
         android:ems="10"
         android:hint="@string/select_product" >

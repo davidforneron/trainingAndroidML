@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:padding="2dp" >
 
+    
     <!-- ListRow Left sied Thumbnail image -->
 
     <LinearLayout
@@ -24,37 +25,42 @@
             android:src="@drawable/ic_launcher" />
 
     </LinearLayout>
-
+    
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/thumbnail"
-        android:layout_alignTop="@+id/thumbnail"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="4dp"
         android:layout_toLeftOf="@+id/textPrice"
         android:layout_toRightOf="@+id/thumbnail"
-        android:gravity="center_vertical|left"
-        android:paddingTop="1dip"
         android:text="@string/app_name"
-        android:textColor="#040404"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:typeface="sans" />
-    
-   	<TextView
-   	    android:id="@+id/textPrice"
-   	    android:layout_width="wrap_content"
-   	    android:layout_height="wrap_content"
-   	    android:layout_alignBottom="@+id/textTitle"
-   	    android:layout_alignParentRight="true"
-   	    android:layout_alignTop="@+id/textTitle"
-   	    android:gravity="center_vertical"
-   	    android:paddingBottom="9dip"
-   	    android:paddingTop="5dip"
-   	    android:text="@string/app_name"
-   	    android:textColor="#040404"
-   	    android:textSize="15sp"
-   	    android:textStyle="bold"
-   	    android:typeface="sans" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textTitle"
+        android:gravity="center_vertical"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textCondition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textPrice"
+        android:text="@string/app_name" />
+
+    <TextView
+        android:id="@+id/textAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textTitle"
+        android:layout_centerVertical="true"
+        android:text="@string/app_name" />
 
 </RelativeLayout>

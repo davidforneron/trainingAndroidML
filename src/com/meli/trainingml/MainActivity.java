@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements IObserver{
 	
 	@SuppressWarnings("unchecked")
 	private void findProduct(String string) {
+		//TODO: Save last search in DB
 		FindTask findTask = new FindTask(this);
 		findTask.registerObserver(this);
 		HashMap<String, String> params = new HashMap<String, String>(); 
