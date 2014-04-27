@@ -1,8 +1,12 @@
 package com.meli.trainingml;
 
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.meli.trainingml.items.Item;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,20 +22,20 @@ import android.widget.TextView;
 
 public class ItemAdapter extends BaseAdapter{
 	private LayoutInflater inflater;
-    private JSONArray jsonArray;
+    private List<Item> items;
     private ViewHolder holder;
     private final static String LOGTAG = ItemAdapter.class.getSimpleName();
 
 
 
-    public ItemAdapter(Activity activity, JSONArray jsonArray) {
-        this.jsonArray = jsonArray;
+    public ItemAdapter(Activity activity, List<Item> items) {
+        this.items = items;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return jsonArray.length();
+        return items.size();
     }
 
     @Override
@@ -49,35 +53,23 @@ public class ItemAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        String uri;
-        Resources res;
         if (convertView == null) {
             vi = inflater.inflate(R.layout.list_item_row, null);
 
             holder = new ViewHolder();
             holder.textTitle = (TextView) vi.findViewById(R.id.textTitle); // Title
             holder.textPrice = (TextView) vi.findViewById(R.id.textPrice); // Price
-            holder.imagePreview = (ImageView) vi.findViewById(R.id.imgPreview); // Preview image
+            holder.imageThumbnail = (ImageView) vi.findViewById(R.id.imgPreview); // Preview image
             vi.setTag(holder);
         } else {
             holder = (ViewHolder) vi.getTag();
         }
-        res = vi.getContext().getApplicationContext().getResources();
-        // Setting all values in listview
-        JSONObject jsonObject;
-        try {
-            jsonObject = jsonArray.getJSONObject(position);
-            holder.textTitle.setText(jsonObject.getString("title"));
-            holder.textPrice.setText(jsonObject.getString("price"));
-            //TEMP
-//            uri = "drawable/";
-//            int imageResource = res.getIdentifier(uri, null, vi.getContext().getApplicationContext().getPackageName());
-//            Drawable image = vi.getContext().getResources().getDrawable(imageResource);
-//            holder.imagePreview.setImageDrawable(image);
+
+        Item item = items.get(position);
+        holder.textTitle.setText(item.getTitle());
+        holder.textPrice.setText(item.getPrice());
+        holder.imageThumbnail.setImageBitmap(item.getThumbnail());
             
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         return vi;
     }
 
@@ -88,7 +80,7 @@ public class ItemAdapter extends BaseAdapter{
 
         TextView textTitle;
         TextView textPrice;
-        ImageView imagePreview;
+        ImageView imageThumbnail;
     }
 
 }

@@ -1,6 +1,10 @@
 package com.meli.trainingml;
 
 import java.util.HashMap;
+
+import com.meli.trainingml.items.FindTask;
+import com.meli.trainingml.util.IObserver;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements IObserver{
 
 	private final static String LOGTAG = MainActivity.class.getSimpleName();
 	EditText edit;
@@ -48,6 +52,7 @@ public class MainActivity extends Activity {
 	@SuppressWarnings("unchecked")
 	private void findProduct(String string) {
 		FindTask findTask = new FindTask(this);
+		findTask.registerObserver(this);
 		HashMap<String, String> params = new HashMap<String, String>(); 
         params.put("product",  string);
 		findTask.execute(params);
@@ -73,49 +78,17 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
-	private class FindTask extends AsyncTask<HashMap<String, String>, Void, String> {
-	    private ProgressDialog dialog = new ProgressDialog(MainActivity.this);
-
-	    private Context context;
-	    private Activity activity;
-	    
-	    public FindTask(Activity activity) {
-	    	this.context = activity.getApplicationContext();
-	    	this.activity = activity;
-	    }
-	    
-	    @Override
-	    protected void onPreExecute() {
-	    	dialog.setMessage("Searching products...");
-	    	dialog.show();
-	    }
-
-	    @Override
-	    protected String doInBackground(HashMap<String, String>... params) {
-	        //Task for doing something 
-	    	String result = MeliService.findProducts(params[0]);
-	        return result;
-	    }
-
-	    @Override
-	    protected void onPostExecute(String result)
-	    {
-	    	dialog.dismiss();
-	        if(result != null){
-	        	showList(result);
-	        	Log.i(MainActivity.LOGTAG, result);
-	        }
-	    }
-	    
-	    private void showList(String response) {
-			Bundle options = new Bundle();
-			options.putString("response", response);
-			Intent intent = new Intent(context, ListItemsActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			intent.putExtras(options);
-			context.startActivity(intent);
-	    }
+	@Override
+	public void update(Object data) {
+		//TODO: Add validations
+		String response = (String) data;
+		Bundle options = new Bundle();
+		options.putString("response", response);
+		Intent intent = new Intent(this, ListItemsActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtras(options);
+		startActivity(intent);
+		
 	}
 
 }
