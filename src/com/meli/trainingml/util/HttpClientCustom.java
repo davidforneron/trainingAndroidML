@@ -40,7 +40,7 @@ public class HttpClientCustom {
         HttpRequestBase request;
         String result = null;
         List<NameValuePair> nameValuePairs = null;
-        
+
         //Add parameters
         if (postParameters != null && postParameters.isEmpty() == false) {
             nameValuePairs = new ArrayList<NameValuePair>(postParameters.size());
@@ -52,7 +52,7 @@ public class HttpClientCustom {
                 nameValuePairs.add(new BasicNameValuePair(k, v));
             }
         }
-        
+
         // Prepare a request object
         if(operation.equals(GET)) {
             if (nameValuePairs != null) {
@@ -75,7 +75,7 @@ public class HttpClientCustom {
         } else {
             throw new UnsupportedOperationException();
         }
-        
+
         // Execute the request
         HttpResponse response;
         try {
@@ -92,7 +92,7 @@ public class HttpClientCustom {
 
                 // A Simple JSON Response Read
                 InputStream instream = entity.getContent();
-                result = convertStreamToString(instream);
+                result = Utils.convertStreamToString(instream);
                 // now you have the string representation of the HTML request
                 instream.close();
             }
@@ -101,12 +101,12 @@ public class HttpClientCustom {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
-        
+
         return result;
-        
+
     }
-    
-    
+
+
     public static byte[] requestStream(String url) {
 
         HttpClient httpclient = new DefaultHttpClient();
@@ -114,7 +114,7 @@ public class HttpClientCustom {
         byte[] result = null;
 
         request = new HttpGet(url);
-        
+
         // Execute the request
         HttpResponse response;
         try {
@@ -129,7 +129,7 @@ public class HttpClientCustom {
 
             if (entity != null) {
                 InputStream instream = entity.getContent();
-                result = toByteArray(instream);
+                result = Utils.toByteArray(instream);
                 // now you have the string representation of the HTML request
                 instream.close();
             }
@@ -138,47 +138,8 @@ public class HttpClientCustom {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
-        
+
         return result;
-        
+
     }
-
-    private static String convertStreamToString(InputStream is) {
-        /*
-         * To convert the InputStream to String we use the
-         * BufferedReader.readLine() method. We iterate until the BufferedReader
-         * return null which means there's no more data to read. Each line will
-         * appended to a StringBuilder and returned as String.
-         */
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
-    
-	public static byte[] toByteArray(InputStream is)
-			throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		int reads = is.read();
-		while (reads != -1) {
-			baos.write(reads);
-			reads = is.read();
-		}
-		return baos.toByteArray();
-	}
-
 }

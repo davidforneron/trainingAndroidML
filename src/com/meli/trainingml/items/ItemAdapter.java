@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ItemAdapter extends BaseAdapter{
-	private LayoutInflater inflater;
+    private LayoutInflater inflater;
     private List<Item> items;
     private ViewHolder holder;
     private final static String LOGTAG = ItemAdapter.class.getSimpleName();
@@ -55,14 +55,14 @@ public class ItemAdapter extends BaseAdapter{
         holder.textPrice.setText(item.getPrice());
         holder.imageThumbnail.setImageBitmap(item.getThumbnail());
         if(holder.textAddress != null) {
-        	holder.textAddress.setText(item.getAddress());
+            holder.textAddress.setText(item.getAddress());
         }
         if(holder.textCondition != null) {
-        	holder.textCondition.setText(item.getCondition());
+            holder.textCondition.setText(item.getCondition());
         }
         return vi;
     }
-    
+
     @Override
     public Object getItem(int position) {
         return  items.get(position);
