@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.meli.trainingml.items.FindTask;
 import com.meli.trainingml.util.IObserver;
+import com.meli.trainingml.util.ImageDownloader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,7 +33,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		initComponents();
-		
 	}
 	
 	private void initComponents() {
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 	private void findProduct(String query) {
 		//TODO: Save last search in DB
 		Bundle options = new Bundle();
-		options.putString("query", query);
+		options.putString(ListItemsActivity.SEARCH_KEY, query);
 		Intent intent = new Intent(this, ListItemsActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.putExtras(options);

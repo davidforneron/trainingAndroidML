@@ -5,6 +5,7 @@ import java.util.Date;
 import android.graphics.Bitmap;
 
 public class Item {
+	String id;
 	String title;
 	String price;
 	Date stopTime;
@@ -12,13 +13,19 @@ public class Item {
 	String address;
 	Bitmap thumbnail;
      
-	public Item(String title, String price, Date stopTime, String condition, String address) {
+	public Item(String id, String title, String price, Date stopTime, String condition, String address) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.price = price;
 		this.stopTime = stopTime;
 		this.condition = condition;
 		this.address = address;
+	}
+	
+	public Item(String id) {
+		super();
+		this.id = id;
 	}
 	
 	public String getTitle() {
@@ -62,6 +69,14 @@ public class Item {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(object != null && object instanceof Item) {
+			return this.id.equals(((Item)object).id);
+		}
+		return false;
 	}
 	
 }

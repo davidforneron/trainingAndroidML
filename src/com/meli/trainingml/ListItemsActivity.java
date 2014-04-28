@@ -9,8 +9,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.meli.trainingml.items.FindTask;
+import com.meli.trainingml.items.ImageTask;
 import com.meli.trainingml.items.Item;
 import com.meli.trainingml.util.IObserver;
+import com.meli.trainingml.util.ImageDownloader;
 import com.meli.trainingml.util.Utils;
 
 import android.app.Activity;
@@ -28,8 +30,8 @@ public class ListItemsActivity extends Activity implements IObserver{
 	
 	private final static String LOGTAG = ListItemsActivity.class.getSimpleName();
 	private final static int SEARCH_LIMIT = 15;
-	private final static String SEARCH_KEY =  "query";
-	private final static String RESPONSE =  "query";
+	public  final static String SEARCH_KEY =  "query";
+	private final static String RESPONSE =  "response";
 	
 	
 	private String query;
@@ -55,8 +57,7 @@ public class ListItemsActivity extends Activity implements IObserver{
 			query = getIntent().getExtras().getString(SEARCH_KEY);
 			findProduct();
 		}
-		
-		
+
 	}
 	
 	private void restoreResults() {
@@ -78,6 +79,7 @@ public class ListItemsActivity extends Activity implements IObserver{
 		list = (ListView) findViewById(R.id.listItems);
         adapter = new ItemAdapter(this, items);
         list.setAdapter(adapter);
+        ImageDownloader.getInstance().registerObserver(this);
         // Click event for single list row
         list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -93,14 +95,12 @@ public class ListItemsActivity extends Activity implements IObserver{
                 int visibleItemCount, int totalItemCount) {
                 //Check if the last view is visible
             	int lastVisiblePosition = view.getLastVisiblePosition();
-                if (lastVisiblePosition + 1 == totalItemCount) {
+                if (lastVisiblePosition + 1 == totalItemCount && totalItemCount > 0) {
                     //load more content
                 	if(!loading) {
                     	Log.i(LOGTAG, "load more content");
                     	findProduct();
-                    	loading = true;
                 	}
-                	
                 }
             }
 
@@ -133,13 +133,14 @@ public class ListItemsActivity extends Activity implements IObserver{
 				jsonItem = jsonArray.getJSONObject(i);
 				
 				String address = jsonItem.getJSONObject("address").getString("state_name");
-				item = new Item(jsonItem.getString("title"), 
+				String id = jsonItem.getString("id");
+				item = new Item(id, jsonItem.getString("title"), 
 						jsonItem.getString("price"), 
 						Utils.getDate(jsonItem.getString("stop_time")), 
 						jsonItem.getString("condition"), 
 						address);
 				items.add(item);
-				//jsonItem.getString("thumbnail")
+				ImageDownloader.getInstance().startDownload(id, jsonItem.getString("thumbnail"));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -150,10 +151,11 @@ public class ListItemsActivity extends Activity implements IObserver{
 	}
 	
 	private void findProduct() {
+		loading = true;
 		FindTask findTask = new FindTask(this);
 		findTask.registerObserver(this);
 		HashMap<String, String> params = new HashMap<String, String>(); 
-        params.put("product",  query);
+        params.put("q",  query);
         params.put("limit",  String.valueOf(SEARCH_LIMIT));
         params.put("offset", String.valueOf(offset));
 		findTask.execute(params);
@@ -161,11 +163,23 @@ public class ListItemsActivity extends Activity implements IObserver{
 	
 	@Override
 	public void update(Object data) {
-		String response = (String) data;
-		results.add(response);
-		offset+=SEARCH_LIMIT;
-		appendItemsToList(response);
-		loading = false;
+		if(data instanceof String) {
+			String response = (String) data;
+			results.add(response);
+			offset+=SEARCH_LIMIT;
+			appendItemsToList(response);
+			loading = false;
+		} else if(data instanceof ImageTask) {
+			ImageTask imageTask = (ImageTask)data;
+			Item item = new Item(imageTask.getId());
+			int index = items.indexOf(item);
+			if(index != -1) {
+				item = items.get(index);
+				item.setThumbnail(imageTask.getBitmap());
+			} else {
+				Log.e(LOGTAG, "item not found");
+			}
+		}
 	}
 	
     private void openDetail(Item item) {

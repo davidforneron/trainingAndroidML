@@ -1,6 +1,7 @@
 package com.meli.trainingml.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +23,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+
 
 
 import android.util.Log;
@@ -103,6 +105,43 @@ public class HttpClientCustom {
         return result;
         
     }
+    
+    
+    public static byte[] requestStream(String url) {
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpRequestBase request;
+        byte[] result = null;
+
+        request = new HttpGet(url);
+        
+        // Execute the request
+        HttpResponse response;
+        try {
+            response = httpclient.execute(request);
+            // Examine the response status
+            Log.i(TAG, response.getStatusLine().toString());
+
+            // Get hold of the response entity
+            HttpEntity entity = response.getEntity();
+            // If the response does not enclose an entity, there is no need
+            // to worry about connection release
+
+            if (entity != null) {
+                InputStream instream = entity.getContent();
+                result = toByteArray(instream);
+                // now you have the string representation of the HTML request
+                instream.close();
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return result;
+        
+    }
 
     private static String convertStreamToString(InputStream is) {
         /*
@@ -130,5 +169,16 @@ public class HttpClientCustom {
         }
         return sb.toString();
     }
+    
+	public static byte[] toByteArray(InputStream is)
+			throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int reads = is.read();
+		while (reads != -1) {
+			baos.write(reads);
+			reads = is.read();
+		}
+		return baos.toByteArray();
+	}
 
 }

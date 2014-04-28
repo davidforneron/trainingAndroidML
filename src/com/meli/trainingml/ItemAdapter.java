@@ -49,7 +49,7 @@ public class ItemAdapter extends BaseAdapter{
         Item item = items.get(position);
         holder.textTitle.setText(item.getTitle());
         holder.textPrice.setText(item.getPrice());
-        //holder.imageThumbnail.setImageBitmap(item.getThumbnail());
+        holder.imageThumbnail.setImageBitmap(item.getThumbnail());
         if(holder.textAddress != null) {
         	holder.textAddress.setText(item.getAddress());
         }
