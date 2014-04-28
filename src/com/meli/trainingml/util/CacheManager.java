@@ -5,26 +5,37 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 
 public class CacheManager {
 
     private final static String LOGTAG = CacheManager.class.getSimpleName();
 
-    private final static int SIZE = 20;
+    private final static int CACHE_MAX_SIZE = 20;
 
     private static CacheManager mInstance;
+    
+    private LinkedHashMap<String, byte[]> cache;
 
-    private HashMap<String, byte[]> cache;
 
     static  {
         // Creates a single static instance of PhotoManager
         mInstance = new CacheManager();
     }
 
+    @SuppressWarnings("serial")
     private CacheManager() {
-        cache = new HashMap<String, byte[]>();
+        cache = new LinkedHashMap<String, byte[]>(CACHE_MAX_SIZE, 0.75f, true) { 
+            protected boolean removeEldestEntry(
+                    Map.Entry<String, byte[]> eldest) {
+                // Remove the eldest entry if the size of the cache exceeds the maximum size
+                return size() > CACHE_MAX_SIZE;
+            }
+        };
     }
 
     /**
@@ -38,14 +49,16 @@ public class CacheManager {
     public byte[] get(String key, Context context) {
         byte[] value = cache.get(key);
         if(value != null) {
+            Log.d(LOGTAG, "item found in memory cache");
             return value;
         }
         String destFolder =  context.getCacheDir().getAbsolutePath();
         try {
             FileInputStream is = new FileInputStream(destFolder + "/" + key);
             value = Utils.toByteArray(is);
+            cache.put(key, value);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //Normal
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,9 +68,7 @@ public class CacheManager {
 
     public void set(String key, byte[] buffer, Context context) {
 
-        //TODO: create cache with a capacity
         cache.put(key, buffer);
-
 
         String destFolder =  context.getCacheDir().getAbsolutePath();
         try {

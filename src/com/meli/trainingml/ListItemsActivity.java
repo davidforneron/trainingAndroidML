@@ -185,6 +185,7 @@ public class ListItemsActivity extends Activity implements IObserver{
                 item = items.get(index);
                 CacheManager.getInstance().set(item.getId(), imageTask.getImageBuffer(), this);
                 item.setThumbnail(imageTask.getImageBuffer());
+                adapter.notifyDataSetChanged();
             } else {
                 Log.e(LOGTAG, "item not found");
             }
