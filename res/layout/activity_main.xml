@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editTextProduct"
+        android:layout_alignRight="@+id/editTextProduct"
         android:layout_below="@+id/editTextProduct"
         android:layout_marginTop="30dp"
         android:text="@string/action_search" />
@@ -28,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textCondition"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/textCondition"
         android:layout_marginTop="14dp"
         android:ems="10"

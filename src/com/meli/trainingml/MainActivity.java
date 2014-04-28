@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class MainActivity extends Activity implements IObserver{
+public class MainActivity extends Activity {
 
 	private final static String LOGTAG = MainActivity.class.getSimpleName();
 	EditText edit;
@@ -50,13 +50,14 @@ public class MainActivity extends Activity implements IObserver{
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void findProduct(String string) {
+	private void findProduct(String query) {
 		//TODO: Save last search in DB
-		FindTask findTask = new FindTask(this);
-		findTask.registerObserver(this);
-		HashMap<String, String> params = new HashMap<String, String>(); 
-        params.put("product",  string);
-		findTask.execute(params);
+		Bundle options = new Bundle();
+		options.putString("query", query);
+		Intent intent = new Intent(this, ListItemsActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtras(options);
+		startActivity(intent);
 	}
 
 	@Override
@@ -77,19 +78,6 @@ public class MainActivity extends Activity implements IObserver{
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void update(Object data) {
-		//TODO: Add validations
-		String response = (String) data;
-		Bundle options = new Bundle();
-		options.putString("response", response);
-		Intent intent = new Intent(this, ListItemsActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtras(options);
-		startActivity(intent);
-		
 	}
 
 }
