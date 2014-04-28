@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.ImageView;
 
 
 public class ImageDownloader implements IObservable{
@@ -74,10 +73,11 @@ public class ImageDownloader implements IObservable{
             public void handleMessage(Message inputMessage) {
             	// Gets the image task from the incoming Message object.
             	ImageTask imageTask = (ImageTask) inputMessage.obj;
-            	Log.i(LOGTAG, "done");
+            	notifyObservers(imageTask);
+            	recycleTask(imageTask);
+            	Log.i(LOGTAG, "image downloaded");
             }
         };
-        
         
     }
     
@@ -152,10 +152,9 @@ public class ImageDownloader implements IObservable{
 	public void handleState(ImageTask imageTask, int state) {
 		switch (state) {
 			case DOWNLOAD_COMPLETE:
-				notifyObservers(imageTask); //Im not using a handler
 				// Gets a Message object, stores the state in it, and sends it to the Handler
-                //Message completeMessage = mHandler.obtainMessage(state, imageTask);
-                //completeMessage.sendToTarget();
+                Message completeMessage = mHandler.obtainMessage(state, imageTask);
+                completeMessage.sendToTarget();
 				break;
 		}
 	}

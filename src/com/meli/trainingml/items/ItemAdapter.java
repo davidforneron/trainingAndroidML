@@ -1,7 +1,11 @@
-package com.meli.trainingml;
+package com.meli.trainingml.items;
 
 import java.util.List;
-import com.meli.trainingml.items.Item;
+
+import com.meli.trainingml.R;
+import com.meli.trainingml.R.id;
+import com.meli.trainingml.R.layout;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

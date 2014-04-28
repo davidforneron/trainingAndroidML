@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import com.meli.trainingml.util.HttpClientCustom;
 import com.meli.trainingml.util.ImageDownloader;
 
-public class ImageTask  implements Runnable{
+public class ImageTask implements Runnable{
 
 	
 	private String imageUrl;
@@ -64,6 +64,10 @@ public class ImageTask  implements Runnable{
     }
 
 	public void recycle() {
+		// Releases references 
+		bitmap = null;
+		imageUrl = null;
+		id = null;
 	}
 
 }

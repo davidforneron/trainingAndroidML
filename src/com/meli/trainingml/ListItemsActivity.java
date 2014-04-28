@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.meli.trainingml.items.FindTask;
 import com.meli.trainingml.items.ImageTask;
 import com.meli.trainingml.items.Item;
+import com.meli.trainingml.items.ItemAdapter;
 import com.meli.trainingml.util.IObserver;
 import com.meli.trainingml.util.ImageDownloader;
 import com.meli.trainingml.util.Utils;

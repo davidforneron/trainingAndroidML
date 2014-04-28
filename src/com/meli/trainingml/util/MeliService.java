@@ -1,11 +1,9 @@
-package com.meli.trainingml;
+package com.meli.trainingml.util;
 
 import java.util.HashMap;
 
-import com.meli.trainingml.util.HttpClientCustom;
-
 public class MeliService {
-												//https://api.mercadolibre.com/sites/MLA/search/
+
 	public static final String MELI_END_POINT ="https://api.mercadolibre.com";
 	public static final String SEARCH_ITEMS_END_POINT = MELI_END_POINT + "/sites/MLA/search";
 	

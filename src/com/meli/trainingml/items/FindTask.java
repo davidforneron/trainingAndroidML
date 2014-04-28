@@ -7,9 +7,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import com.meli.trainingml.MeliService;
+
 import com.meli.trainingml.util.IObservable;
 import com.meli.trainingml.util.IObserver;
+import com.meli.trainingml.util.MeliService;
 
 public class FindTask extends AsyncTask<HashMap<String, String>, Void, String> implements IObservable {
 	private final static String LOGTAG = FindTask.class.getSimpleName();
