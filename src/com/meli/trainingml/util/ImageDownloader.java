@@ -82,8 +82,8 @@ public class ImageDownloader implements IObservable{
     }
     
     /**
-     * Returns the PhotoManager object
-     * @return The global PhotoManager object
+     * Returns the ImageDownloader object
+     * @return The global ImageDownloader object
      */
     public static ImageDownloader getInstance() {
         return mInstance;
