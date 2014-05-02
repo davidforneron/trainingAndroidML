@@ -15,9 +15,12 @@ import com.meli.trainingml.items.ItemAdapter;
 import com.meli.trainingml.util.CacheManager;
 import com.meli.trainingml.util.IObserver;
 import com.meli.trainingml.util.ImageDownloader;
+import com.meli.trainingml.util.MeliService;
 import com.meli.trainingml.util.Utils;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,7 +64,19 @@ public class ListItemsActivity extends Activity implements IObserver{
         }
 
     }
-
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ImageDownloader.getInstance().registerObserver(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ImageDownloader.getInstance().removeObserver(this);
+    }
+    
     private void restoreResults() {
         for(String response : results) {
             appendItemsToList(response);
@@ -142,7 +157,7 @@ public class ListItemsActivity extends Activity implements IObserver{
                         jsonItem.getString("condition"), 
                         address);
                 items.add(item);
-                byte [] bufferedThumbnail = CacheManager.getInstance().get(id, this);
+                Bitmap bufferedThumbnail = CacheManager.getInstance().getImage(id);
                 if(bufferedThumbnail == null) {
                     ImageDownloader.getInstance().startDownload(id, jsonItem.getString("thumbnail"));    
                 } else {
@@ -160,7 +175,7 @@ public class ListItemsActivity extends Activity implements IObserver{
 
     private void findProduct() {
         loading = true;
-        FindTask findTask = new FindTask(this);
+        FindTask findTask = new FindTask(this, MeliService.SEARCH_ITEMS_END_POINT);
         findTask.registerObserver(this);
         HashMap<String, String> params = new HashMap<String, String>(); 
         params.put("q",  query);
@@ -183,8 +198,7 @@ public class ListItemsActivity extends Activity implements IObserver{
             int index = items.indexOf(item);
             if(index != -1) {
                 item = items.get(index);
-                CacheManager.getInstance().set(item.getId(), imageTask.getImageBuffer(), this);
-                item.setThumbnail(imageTask.getImageBuffer());
+                item.setThumbnail(imageTask.getImageBitmap());
                 adapter.notifyDataSetChanged();
             } else {
                 Log.e(LOGTAG, "item not found");
@@ -193,8 +207,12 @@ public class ListItemsActivity extends Activity implements IObserver{
     }
 
     private void openDetail(Item item) {
-
-
+        Bundle options = new Bundle();
+        options.putSerializable("item", item);
+        Intent intent = new Intent(this, ItemDetailActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtras(options);
+        startActivity(intent);
     }
 
 }

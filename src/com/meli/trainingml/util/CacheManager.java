@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class CacheManager {
@@ -20,6 +22,8 @@ public class CacheManager {
     private static CacheManager mInstance;
     
     private LinkedHashMap<String, byte[]> cache;
+    
+    private String destFolder;
 
 
     static  {
@@ -45,39 +49,51 @@ public class CacheManager {
     public static CacheManager getInstance() {
         return mInstance;
     }
+    
+    public void setDestinationFolder(String destinationFolder) {
+        destFolder = destinationFolder;
+    }
+    
+    public Bitmap getImage(String key) {
+        Bitmap value = null;
+        byte[] buffer = get(key);
+        if(buffer != null) {
+            value = BitmapFactory.decodeByteArray(buffer, 0, buffer.length, null);
+        }
+        return value;
+    }
 
-    public byte[] get(String key, Context context) {
+    public byte[] get(String key) {
         byte[] value = cache.get(key);
         if(value != null) {
             Log.d(LOGTAG, "item found in memory cache");
             return value;
         }
-        String destFolder =  context.getCacheDir().getAbsolutePath();
-        try {
-            FileInputStream is = new FileInputStream(destFolder + "/" + key);
-            value = Utils.toByteArray(is);
-            cache.put(key, value);
-        } catch (FileNotFoundException e) {
-            //Normal
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(destFolder != null) {
+            try {
+                FileInputStream is = new FileInputStream(destFolder + "/" + key);
+                value = Utils.toByteArray(is);
+                cache.put(key, value);
+            } catch (FileNotFoundException e) {
+                //Normal
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return value;
     }
 
 
-    public void set(String key, byte[] buffer, Context context) {
-
+    public void set(String key, byte[] buffer) {
         cache.put(key, buffer);
-
-        String destFolder =  context.getCacheDir().getAbsolutePath();
-        try {
-            FileOutputStream out = new FileOutputStream(destFolder + "/" + key);
-            out.write(buffer);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(destFolder != null) {
+            try {
+                FileOutputStream out = new FileOutputStream(destFolder + "/" + key);
+                out.write(buffer);
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 }

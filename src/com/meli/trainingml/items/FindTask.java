@@ -17,21 +17,24 @@ public class FindTask extends AsyncTask<HashMap<String, String>, Void, String> i
 
     private ProgressDialog dialog;
     private ArrayList<IObserver> observers = new ArrayList<IObserver>();
+    private String url;
     private String response;
-
-    public FindTask(Activity activity) {
-        dialog = new ProgressDialog(activity);
+    
+    
+    public FindTask(Activity activity, String url) {
+    	dialog = new ProgressDialog(activity);
+    	this.url = url;
     }
-
+    
     @Override
     protected void onPreExecute() {
-        dialog.setMessage("Searching products...");
-        dialog.show();
+    	dialog.setMessage("Searching products...");
+    	dialog.show();
     }
 
     @Override
     protected String doInBackground(HashMap<String, String>... params) {
-        return  MeliService.findProducts(params[0]);
+		return  MeliService.find(url, params[0]);
     }
 
     @Override

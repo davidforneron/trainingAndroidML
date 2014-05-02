@@ -1,16 +1,10 @@
 package com.meli.trainingml;
 
-import java.util.HashMap;
 
-import com.meli.trainingml.items.FindTask;
-import com.meli.trainingml.util.IObserver;
-import com.meli.trainingml.util.ImageDownloader;
+import com.meli.trainingml.util.CacheManager;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,7 +25,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        CacheManager.getInstance().setDestinationFolder(getCacheDir().getAbsolutePath());
         initComponents();
     }
 

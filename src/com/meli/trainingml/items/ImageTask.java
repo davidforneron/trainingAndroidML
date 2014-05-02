@@ -1,5 +1,9 @@
 package com.meli.trainingml.items;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.meli.trainingml.util.CacheManager;
 import com.meli.trainingml.util.HttpClientCustom;
 import com.meli.trainingml.util.ImageDownloader;
 
@@ -8,15 +12,14 @@ public class ImageTask implements Runnable{
 
     private String imageUrl;
     private String id;
-    private byte[] imageBuffer ;
-
-    public byte[] getImageBuffer() {
-        return imageBuffer;
+    private Bitmap imageBitmap;
+   
+    public void setImageBitmap(Bitmap imageBitmap) {
+        this.imageBitmap = imageBitmap;
     }
 
-
-    public void setImageBuffer(byte[] imageBuffer) {
-        this.imageBuffer = imageBuffer;
+    public Bitmap getImageBitmap() {
+        return imageBitmap;
     }
 
 
@@ -48,7 +51,12 @@ public class ImageTask implements Runnable{
 
     @Override
     public void run() {
-        imageBuffer = HttpClientCustom.requestStream(imageUrl);
+        byte[] imageBuffer = HttpClientCustom.requestStream(imageUrl);
+        //TODO: be able to set options
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        imageBitmap = BitmapFactory.decodeByteArray(imageBuffer, 0, imageBuffer.length, null);
+        CacheManager.getInstance().set(id, imageBuffer);
         handleState(ImageDownloader.DOWNLOAD_COMPLETE);
     }
 
@@ -59,7 +67,7 @@ public class ImageTask implements Runnable{
 
     public void recycle() {
         // Releases references 
-        imageBuffer = null;
+        imageBitmap = null;
         imageUrl = null;
         id = null;
     }

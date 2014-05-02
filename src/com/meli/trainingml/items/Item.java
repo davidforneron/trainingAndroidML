@@ -1,18 +1,19 @@
 package com.meli.trainingml.items;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class Item {
+public class Item implements Serializable{
     String id;
     String title;
     String price;
     Date stopTime;
     String condition;
     String address;
-    Bitmap thumbnail;
+    transient Bitmap thumbnail;
 
     public Item(String id, String title, String price, Date stopTime, String condition, String address) {
         super();
