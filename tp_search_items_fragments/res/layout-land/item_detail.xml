@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="50dip"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/imgItem"
+        android:layout_width="200dip"
+        android:layout_height="200dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textTitle"
+        android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+
+    <TextView
+        android:id="@+id/textPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textCondition"
+        android:layout_alignTop="@+id/imgItem"
+        android:text="price"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textCondition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/imgItem"
+        android:text="condition"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textStopTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textAddress"
+        android:layout_below="@+id/textAddress"
+        android:layout_marginTop="19dp"
+        android:text="stop time"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textCondition"
+        android:layout_below="@+id/textCondition"
+        android:layout_marginTop="22dp"
+        android:text="address"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>
