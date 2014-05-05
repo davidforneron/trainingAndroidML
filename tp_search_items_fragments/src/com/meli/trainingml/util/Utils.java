@@ -9,6 +9,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
 public class Utils {
 
     /**
@@ -64,6 +69,43 @@ public class Utils {
             reads = is.read();
         }
         return baos.toByteArray();
+    }
+    
+    public static void openFragment(Fragment srcFrg, Fragment dstFragment,
+            Bundle options, int idContainer, boolean addToBack, String tag) {
+        FragmentManager fragmentManager = srcFrg.getFragmentManager();
+        if (options != null) {
+            dstFragment.setArguments(options);
+        }
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        if (tag == null) {
+            ft.replace(idContainer, dstFragment);
+        } else {
+            ft.replace(idContainer, dstFragment, tag);
+        }
+        if (addToBack) {
+            ft.addToBackStack(tag);
+        }
+        ft.commit();
+    }
+    
+    public static void openFragment(FragmentManager fragmentManager, Fragment dstFragment,
+            Bundle options, int idContainer, boolean addToBack, String tag) {
+        if (options != null) {
+            dstFragment.setArguments(options);
+        }
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        if (tag == null) {
+            ft.replace(idContainer, dstFragment);
+        } else {
+            ft.replace(idContainer, dstFragment, tag);
+        }
+        if (addToBack) {
+            ft.addToBackStack(tag);
+        }
+        ft.commit();
     }
 
 }

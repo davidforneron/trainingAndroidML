@@ -22,8 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.meli.trainingml.ListItemsActivity"></activity>
-        <activity android:name="com.meli.trainingml.ItemDetailActivity"></activity>
     </application>
 	<category android:name="android.intent.category.DEFAULT" />
 </manifest>

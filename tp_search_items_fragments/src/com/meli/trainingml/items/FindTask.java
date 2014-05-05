@@ -42,7 +42,6 @@ public class FindTask extends AsyncTask<HashMap<String, String>, Void, String> i
         dialog.dismiss();
         response = result;
         notifyObservers();
-        Log.i(LOGTAG, result);
     }
 
     @Override
