@@ -18,13 +18,14 @@ public class FeaturesItemsWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             // Create an Intent to launch ExampleActivity
-            //Intent intent = new Intent(context, ExampleActivity.class);
-            //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            Intent intent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_main);
-            //views.setOnClickPendingIntent(R.id.button, pendingIntent);
+            views.setOnClickPendingIntent(R.id.btnHot, pendingIntent);
+            views.setOnClickPendingIntent(R.id.btnCategories, pendingIntent);
 
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
