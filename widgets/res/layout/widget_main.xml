@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appwidget_dark_bg"
+    android:orientation="vertical"
+	android:padding="@dimen/widget_margin" >
+    
+    
+  <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal" 
+       android:padding="@dimen/widget_margin" >
+
+    <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="50dp"
+       android:background="@drawable/abc_textfield_searchview_holo_dark"
+       android:layout_weight=".55"
+       android:layout_marginLeft="@dimen/control_margin" 
+       android:orientation="horizontal" >
+	   
+	</LinearLayout>
+  
+  	<ImageButton
+        android:id="@+id/btnSearch"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".40"
+        android:background="@drawable/appwidget_button_right"
+        android:layout_marginRight="@dimen/control_margin" 
+        android:src="@drawable/abc_ic_search" />
+      
+      
+  </LinearLayout>
+    
+
+  
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+   	
+   	<Button
+        android:id="@+id/btnHot"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".30"
+        android:text="Hot" />
+	<Button
+        android:id="@+id/btnTrend"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".30"
+        android:text="Trend" />
+	
+	<Button
+        android:id="@+id/btnFeatures"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".40"
+        android:text="Features" />
+  </LinearLayout>
+  	
+</LinearLayout>
