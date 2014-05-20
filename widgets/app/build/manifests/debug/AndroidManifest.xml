@@ -1,0 +1,22 @@
+<!-- From: file:/F:/PROYECTOS/ANDROID/android_studio/trainingAndroidML/widgets/app/src/main/AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.meli.widgets">
+
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
+
+    <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
+        <activity android:label="@string/app_name" android:name="com.meli.widgets.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+       	<receiver android:name="com.meli.widgets.FeaturesItemsWidgetProvider">
+		    <intent-filter>
+		        <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+		    </intent-filter>
+		    <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_features_items"/>
+		</receiver>
+    </application>
+
+</manifest>
