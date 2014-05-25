@@ -5,7 +5,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,9 +14,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-public class ImageDownloader implements IObservable{
+public class ImageDownloader{
 
-    private final static String LOGTAG = ImageDownloader.class.getSimpleName();
+    private final static String TAG = ImageDownloader.class.getSimpleName();
 
     public static final int DOWNLOAD_COMPLETE = 0;
     public static final int DOWNLOAD_FAILED = -1;
@@ -34,7 +35,8 @@ public class ImageDownloader implements IObservable{
 
     private static ImageDownloader mInstance;
 
-    private ArrayList<IObserver> observers = new ArrayList<IObserver>();
+    private Map<String, IObserver> observers = new HashMap<String, IObserver>();
+
     private Handler mHandler;
 
     // A queue of Runnables
@@ -71,9 +73,9 @@ public class ImageDownloader implements IObservable{
             public void handleMessage(Message inputMessage) {
                 // Gets the image task from the incoming Message object.
                 ImageTask imageTask = (ImageTask) inputMessage.obj;
-                notifyObservers(imageTask);
+                notifyObserver(imageTask);
                 recycleTask(imageTask);
-                Log.i(LOGTAG, "image downloaded");
+                Log.i(TAG, "image downloaded");
             }
         };
 
@@ -89,13 +91,12 @@ public class ImageDownloader implements IObservable{
 
     /**
      * Starts an image download
-     *
-     * @param imageView The ImageView that will get the resulting Bitmap
-     * @param cacheFlag Determines if caching should be used
-     * @return The task instance that will handle the work
      */
-    public void startDownload(String id, String imageUrl) {
+    public void startDownload(String id, String imageUrl, IObserver observer) {
 
+        if(observers.containsKey(id)) {
+            throw new IllegalArgumentException("ID already exist in queue");
+        }
         /*
          * Gets a task from the pool of tasks, returning null if the pool is empty
          */
@@ -108,6 +109,8 @@ public class ImageDownloader implements IObservable{
             downloadTask.setId(id);
             downloadTask.setImageUrl(imageUrl);
         }
+
+        observers.put(id, observer);
         mInstance.mDownloadThreadPool.execute(downloadTask);
     }
 
@@ -125,26 +128,10 @@ public class ImageDownloader implements IObservable{
         mImageTaskWorkQueue.offer(downloadTask);
     }
 
-
-    @Override
-    public void registerObserver(IObserver observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(IObserver observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-    }
-
-    public void notifyObservers(ImageTask imageTask) {
-        for (IObserver observer : observers) {
-            System.out.println("Notifying Observers");
-            observer.update(imageTask);
-        }
+    public void notifyObserver(ImageTask imageTask) {
+       IObserver observer = observers.remove(imageTask.getId());
+        System.out.println("Notifying Observers");
+        observer.update(imageTask);
     }
 
     public void handleState(ImageTask imageTask, int state) {

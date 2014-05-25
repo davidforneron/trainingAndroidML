@@ -10,6 +10,8 @@ public class MeliService {
     public static final String SEARCH_ITEMS_END_POINT = MELI_END_POINT + "/sites/MLA/search";
     public static final String SEARCH_CATEGORIES_END_POINT = MELI_END_POINT + "/sites/MLA/categories";
 
+    public static final String SEARCH_HOT_END_POINT = MELI_END_POINT + "/sites/MLA/hot_items/search";
+
     public static final String ITEMS_END_POINT = MELI_END_POINT+ "/items";
 
     public static String findProducts(HashMap<String, String> params) {

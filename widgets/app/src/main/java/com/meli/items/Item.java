@@ -13,6 +13,8 @@ public class Item implements Serializable{
     Date stopTime;
     String condition;
     String address;
+    String listingMode;
+    int soldQuantity;
     transient Bitmap thumbnail;
 
     public Item(String id, String title, String price, Date stopTime, String condition, String address) {
@@ -23,6 +25,15 @@ public class Item implements Serializable{
         this.stopTime = stopTime;
         this.condition = condition;
         this.address = address;
+    }
+
+    public Item(String id, String title, String price, String listingMode, int soldQuantity) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.listingMode = listingMode;
+        this.soldQuantity = soldQuantity;
     }
 
     public Item(String id) {
