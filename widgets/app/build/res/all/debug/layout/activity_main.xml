@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.meli.widgets.MainActivity"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame" >
+</FrameLayout>
 
 <!-- From: file:/F:/PROYECTOS/ANDROID/android_studio/trainingAndroidML/widgets/app/src/main/res/layout/activity_main.xml -->

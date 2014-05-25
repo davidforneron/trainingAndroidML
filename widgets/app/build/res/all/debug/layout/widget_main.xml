@@ -4,24 +4,25 @@
     android:layout_height="match_parent"
     android:background="@drawable/appwidget_dark_bg"
     android:orientation="vertical"
-	android:padding="@dimen/widget_margin" >
+	android:padding="@dimen/widget_margin"
+    android:weightSum="1">
     
     
   <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:orientation="horizontal" 
+       android:orientation="horizontal"
        android:padding="@dimen/widget_margin" >
 
-    <Button
-        android:id="@+id/btnCategories"
+    <TextView
+        android:id="@+id/textCategories"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-	   	android:background="@drawable/abc_textfield_searchview_holo_dark"
+	   	android:background="@drawable/abc_spinner_ab_holo_dark"
 	   	android:layout_weight=".80"
-	   	android:layout_marginLeft="@dimen/control_margin" 
-        />
+	   	android:layout_marginLeft="@dimen/control_margin"
+        android:text="texto del textview" />
   	<ImageButton
         android:id="@+id/btnSearch"
         style="?android:attr/buttonStyleSmall"
@@ -30,7 +31,8 @@
         android:layout_weight=".15"
         android:background="@drawable/appwidget_button_right"
         android:layout_marginRight="@dimen/control_margin" 
-        android:src="@drawable/abc_ic_search" />
+        android:src="@drawable/abc_ic_search"
+        android:contentDescription="" />
       
       
   </LinearLayout>
@@ -48,14 +50,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight=".30"
-        android:text="Hot" />
+        android:text="@string/hot" />
 	<Button
         android:id="@+id/btnTrend"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight=".30"
-        android:text="Trend" />
+        android:text="@string/trend" />
 	
 	<Button
         android:id="@+id/btnFeatures"
@@ -63,8 +65,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight=".40"
-        android:text="Features" />
+        android:text="@string/features" />
   </LinearLayout>
-  	
+
 </LinearLayout>
 <!-- From: file:/F:/PROYECTOS/ANDROID/android_studio/trainingAndroidML/widgets/app/src/main/res/layout/widget_main.xml -->
