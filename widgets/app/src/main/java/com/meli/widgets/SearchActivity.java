@@ -1,13 +1,12 @@
 package com.meli.widgets;
 
+import android.app.Activity;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.meli.items.Item;
 import com.meli.utils.CacheManager;
@@ -25,16 +24,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SearchActivity extends ActionBarActivity {
+public class SearchActivity extends Activity {
 
     private final static String TAG = SearchActivity.class.getSimpleName();
 
     private final static int SEARCH_LIMIT = 5;
-    private int offset = 0;
+    private static int offset = 0;
 
     int mAppWidgetId;
-    private List<Item> items;
-    private ArrayList<String> results;
+
+    private static List<Item> items;
+    private static ArrayList<String> results;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class SearchActivity extends ActionBarActivity {
             finish();
             return;
         }
+        mAppWidgetId = intent.getIntExtra(FeaturesItemsWidgetProvider.APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         String action = intent.getAction();
         if(action == FeaturesItemsWidgetProvider.ACTION_HOT) {
             loadHotItems();
@@ -127,62 +128,22 @@ public class SearchActivity extends ActionBarActivity {
         updateViewContent();
     }
 
-//    private void parseItemResponse(String response) {
-//        JSONObject jsonResponse;
-//        JSONArray jsonArray;
-//        JSONObject jsonCategory;
-//        try {
-//            jsonArray = new JSONArray(response);
-//            for(int i=0; i < jsonArray.length(); i++) {
-//                jsonCategory = jsonArray.getJSONObject(i);
-//                categories.add(jsonCategory.getString("name"));
-//                categoriesMap.put(jsonCategory.getString("id"), jsonCategory.getString("name"));
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        Log.i(TAG, "Number of entries " + categories.size());
-//        updateViewContent();
-//    }
-
     private void updateViewContent() {
-
-    }
-
-    public void onCategorySelected(int index) {
-//        Intent _intent = getIntent();
-//        Bundle extras = _intent.getExtras();
-//
-//        if (extras != null) {
-//            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-//        }
-        Intent intent = new Intent(this,FeaturesItemsWidgetProvider.class);
-        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        intent.setAction(FeaturesItemsWidgetProvider.ACTION_CATEGORIES);
-        intent.putExtra("value", index);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{FeaturesItemsWidgetProvider.APPWIDGET_ID});
-        sendBroadcast(intent);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(getApplicationContext(), FeaturesItemsWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewItems);
+//        Intent intent = new Intent(this,FeaturesItemsWidgetProvider.class);
+//        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{mAppWidgetId});
+//        sendBroadcast(intent);
         finish();
     }
 
+    public static List<Item> getItems() {
+        return items;
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    public static void setItems(List<Item> items) {
+        SearchActivity.items = items;
+    }
 }

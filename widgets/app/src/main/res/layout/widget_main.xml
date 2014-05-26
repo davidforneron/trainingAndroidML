@@ -67,11 +67,19 @@
         android:layout_weight=".40"
         android:text="@string/features" />
   </LinearLayout>
-  <StackView
-        android:id="@+id/stack_view"
+  <ListView
+        android:id="@+id/listViewItems"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:loopViews="true" />
+        android:text="@string/empty_string"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
 </LinearLayout>

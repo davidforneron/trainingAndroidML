@@ -49,6 +49,7 @@ public class CategoryActivity extends Activity {
             return;
         }
         String action = intent.getAction();
+        mAppWidgetId = intent.getIntExtra(FeaturesItemsWidgetProvider.APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         if(action == FeaturesItemsWidgetProvider.ACTION_CATEGORIES) {
             loadCategories();
         } else {
@@ -101,17 +102,11 @@ public class CategoryActivity extends Activity {
     }
 
     public void onCategorySelected(int index) {
-//        Intent _intent = getIntent();
-//        Bundle extras = _intent.getExtras();
-//
-//        if (extras != null) {
-//            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-//        }
+        selectedCategory = index;
         Intent intent = new Intent(this,FeaturesItemsWidgetProvider.class);
         intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
         intent.putExtra("value", index);
-        selectedCategory = index;
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{FeaturesItemsWidgetProvider.APPWIDGET_ID});
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{mAppWidgetId});
         sendBroadcast(intent);
         finish();
     }

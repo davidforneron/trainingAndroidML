@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <application
@@ -23,8 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.meli.widgets.CategoryActivity"></activity>
-        <activity android:name="com.meli.widgets.SearchActivity"></activity>
+        <activity android:name="com.meli.widgets.CategoryActivity" android:theme="@style/Theme.Transparent"></activity>
+        <activity android:name="com.meli.widgets.SearchActivity" android:theme="@style/Theme.Transparent"></activity>
 
        	<receiver android:name="com.meli.widgets.FeaturesItemsWidgetProvider" >
 		    <intent-filter>
@@ -33,6 +33,8 @@
 		    <meta-data android:name="android.appwidget.provider"
 		               android:resource="@xml/appwidget_features_items" />
 		</receiver>
+        <service android:name="com.meli.widgets.remoteview.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

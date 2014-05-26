@@ -7,5 +7,6 @@
     <string name="hot">Hot</string>
     <string name="trend">Trend</string>
     <string name="features">Features</string>
+    <string name="empty_string">No results</string>
 
 </resources>

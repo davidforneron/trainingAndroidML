@@ -3,10 +3,6 @@ package com.meli.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.meli.utils.CacheManager;
-import com.meli.utils.HttpClientCustom;
-import com.meli.utils.ImageDownloader;
-
 public class ImageTask implements Runnable{
 
 
