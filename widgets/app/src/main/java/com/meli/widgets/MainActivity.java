@@ -141,7 +141,7 @@ public class MainActivity extends ActionBarActivity {
         Intent _intent = new Intent(this,FeaturesItemsWidgetProvider.class);
         _intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
         _intent.putExtra("INDEX", index);
-        _intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[mAppWidgetId]);
+        _intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{mAppWidgetId});
         sendBroadcast(_intent);
         finish();
     }

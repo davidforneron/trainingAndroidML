@@ -29,6 +29,11 @@ public class CategoryActivity extends Activity {
     private static List <String> categoriesId;
     private static int selectedCategory = -1;
 
+    static {
+        categoriesNames = new ArrayList<String>();
+        categoriesId = new ArrayList<String>();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +57,7 @@ public class CategoryActivity extends Activity {
     }
 
     private void loadCategories() {
-        if(categoriesNames == null) {
-            categoriesNames = new ArrayList<String>();
-            categoriesId = new ArrayList<String>();
+        if(categoriesNames.isEmpty()) {
             FindTask findTask = new FindTask(this, MeliService.SEARCH_CATEGORIES_END_POINT, new IObserver() {
                 @Override
                 public void update(Object data) {
@@ -98,24 +101,26 @@ public class CategoryActivity extends Activity {
     }
 
     public void onCategorySelected(int index) {
-        Intent _intent = getIntent();
-        Bundle extras = _intent.getExtras();
-
-        if (extras != null) {
-            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
+//        Intent _intent = getIntent();
+//        Bundle extras = _intent.getExtras();
+//
+//        if (extras != null) {
+//            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+//        }
         Intent intent = new Intent(this,FeaturesItemsWidgetProvider.class);
         intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        intent.setAction(FeaturesItemsWidgetProvider.ACTION_CATEGORIES);
         intent.putExtra("value", index);
         selectedCategory = index;
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[mAppWidgetId]);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{FeaturesItemsWidgetProvider.APPWIDGET_ID});
         sendBroadcast(intent);
         finish();
     }
 
-    public static List<String> getCategoriesNames() {
-        return categoriesNames;
+    public static String getCategoryTitle() {
+        if(selectedCategory != -1) {
+            return categoriesNames.get(selectedCategory);
+        }
+        return null;
     }
 
     public static void setCategoriesNames(List<String> categoriesNames) {
@@ -127,7 +132,10 @@ public class CategoryActivity extends Activity {
     }
 
     public static String getSelectedCategory() {
-        return categoriesId.get(selectedCategory);
+        if(selectedCategory != -1) {
+            return categoriesId.get(selectedCategory);
+        }
+        return null;
     }
 
     public static void setSelectedCategory(int selectedCategory) {

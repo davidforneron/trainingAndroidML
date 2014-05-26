@@ -150,17 +150,17 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     public void onCategorySelected(int index) {
-        Intent _intent = getIntent();
-        Bundle extras = _intent.getExtras();
-
-        if (extras != null) {
-            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
+//        Intent _intent = getIntent();
+//        Bundle extras = _intent.getExtras();
+//
+//        if (extras != null) {
+//            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+//        }
         Intent intent = new Intent(this,FeaturesItemsWidgetProvider.class);
         intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
         intent.setAction(FeaturesItemsWidgetProvider.ACTION_CATEGORIES);
         intent.putExtra("value", index);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[mAppWidgetId]);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{FeaturesItemsWidgetProvider.APPWIDGET_ID});
         sendBroadcast(intent);
         finish();
     }

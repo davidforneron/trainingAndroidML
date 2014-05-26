@@ -17,6 +17,8 @@ public class FeaturesItemsWidgetProvider extends AppWidgetProvider {
     public static final String ACTION_SEARCH = "SEARCH";
     public static final String ACTION_FEATURES = "FEATURES";
 
+    public static int APPWIDGET_ID;
+
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int N = appWidgetIds.length;
         // Perform this loop procedure for each App Widget that belongs to this provider
@@ -24,6 +26,7 @@ public class FeaturesItemsWidgetProvider extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             Intent intent = new Intent();
+            APPWIDGET_ID = appWidgetId;
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             ComponentName category = new ComponentName("com.meli.widgets", "com.meli.widgets.CategoryActivity");
             ComponentName search = new ComponentName("com.meli.widgets", "com.meli.widgets.SearchActivity");
@@ -60,9 +63,11 @@ public class FeaturesItemsWidgetProvider extends AppWidgetProvider {
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     public void updateWidgetMain(RemoteViews views) {
-        views.setTextViewText(R.id.textCategories,"");
+        String category = CategoryActivity.getCategoryTitle();
+        views.setTextViewText(R.id.textCategories, category != null ? category : "");
     }
 }
